@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: validator-frontend
-  name: validator-frontend
+    app: validator-backend
+  name: validator-backend
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: validator-frontend
+      app: validator-backend
   template:
     metadata:
       labels:
-        app: validator-frontend
+        app: validator-backend
     spec:
       containers:
-      - name: validator-frontend
-        image: 992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-frontend:latest
+      - name: validator-backend
+        image: 992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-backendend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8081
@@ -29,9 +29,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: validator-frontend
-    k8s-app: validator-frontend
-  name: validator-frontend
+    app: validator-backend
+    k8s-app: validator-backend
+  name: validator-backend
 spec:
   ports:
   - name: http
@@ -40,4 +40,4 @@ spec:
     targetPort: 8081
   type: LoadBalancer
   selector:
-    app: validator-frontend
+    app: validator-backend
