@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: validator-frontend
+  name: validator-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: validator-frontend
+  template:
+    metadata:
+      labels:
+        app: validator-frontend
+    spec:
+      containers:
+      - name: validator-frontend
+        image: 992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+          name: http
+          protocol: TCP
+
+# service type loadbalancer       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: validator-frontend
+    k8s-app: validator-frontend
+  name: validator-frontend
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8081
+  type: LoadBalancer
+  selector:
+    app: validator-frontend
