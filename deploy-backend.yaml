@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: validator-backend
+  name: validator-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: validator-backend
+  template:
+    metadata:
+      labels:
+        app: validator-backend
+    spec:
+      containers:
+      - name: validator-backend
+        image: 992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP

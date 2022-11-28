@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        registry = "992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-frontend"
+    }
+
+    stages {
+        stage ('Checkout') {
+            steps {
+                checkout ()
+            }
+        }
+
+        stage ("Build image") {
+            steps {
+                script {
+                    docker.build registry
+                }
+            }
+        }
+
+        stage ("docker push") {
+            steps {
+                script {
+                    sh ""
+                    sh "docker push 992122884453.dkr.ecr.us-east-1.amazonaws.com/validator-frontend"
+                }
+            }
+        }
+
+        stage ("kube Deploy") {
+            steps {
+                
+                sh "kubectl apply -f deploy-frontend.yaml"
+            }
+        }
+    }
+}
